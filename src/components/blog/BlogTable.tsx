@@ -89,9 +89,9 @@ export function BlogTable({
       enableHiding: false,
     },
     {
-      accessorKey: "sn",
+      id: "sn",
       header: ({ column }) => <div className="text-start">S.N.</div>,
-      cell: ({ row }) => <div>{row.getValue("sn")}</div>,
+      cell: ({ row }) => <div>{row.index + 1}</div>,
     },
     {
       accessorKey: "coverImage",
@@ -173,7 +173,7 @@ export function BlogTable({
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
                 <AlertDialogAction
                   className="bg-red-500 hover:bg-red-600"
-                  onClick={() => handleDelete(row.original._id)}
+                  onClick={() => handleDelete(row.original.id)}
                 >
                   Confirm
                 </AlertDialogAction>
@@ -218,7 +218,7 @@ export function BlogTable({
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
               disabled={isPending}
-              onClick={() => blogToDelete && handleDelete(blogToDelete._id)}
+              onClick={() => blogToDelete && handleDelete(blogToDelete.id)}
             >
               {"Confirm"}
             </AlertDialogAction>

@@ -51,7 +51,7 @@ interface DataTableProps<TData, TValue> {
   initialSorting?: SortingState;
 }
 
-export function DataTable<TData extends { _id: string }, TValue>({
+export function DataTable<TData extends { id: string }, TValue>({
   columns,
   data,
   filterColumn,
@@ -144,7 +144,7 @@ export function DataTable<TData extends { _id: string }, TValue>({
                   return (
                     <DraggableRow
                       key={row.id}
-                      id={row.original._id}
+                      id={row.original.id}
                       company={row.original}
                     >
                       {row.getVisibleCells().map((cell) => (

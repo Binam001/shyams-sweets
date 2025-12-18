@@ -1,5 +1,5 @@
 export type Blog = {
-  _id: string;
+  id: string;
   title: string;
   slug: string;
   coverImage: string;
@@ -7,10 +7,18 @@ export type Blog = {
   description: string;
   sortOrder: number;
   estimatedReadTime: number;
-  // isActive: boolean;
+  isPublished: boolean;
+  publishedAt: string | null;
   createdAt: string;
   updatedAt: string;
-  __v: number;
+  author: {
+    id: string;
+    firstname: string;
+    lastname: string;
+    email: string;
+  };
+  mediaAssets: any[];
+  seoMetadata: any;
 };
 
 export type BlogListResponse = {

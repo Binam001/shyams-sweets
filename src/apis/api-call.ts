@@ -73,8 +73,17 @@ export const blogApi = {
   getAllBlogs: (params?: { page?: number; limit?: number }) =>
     api.get("/blog/get-all-blogs", { params }).then((response) => {
       return {
-        data: response.data.data,
-        pagination: response.data.pagination,
+        data: response.data.data.blogs,
+        pagination: {
+          total: response.data.data.total,
+          totalPages: response.data.data.totalPages,
+          currentPage: response.data.data.page,
+          itemsPerPage: response.data.data.limit,
+          hasNextPage: response.data.data.page < response.data.data.totalPages,
+          hasPreviousPage: response.data.data.page > 1,
+          nextPage: response.data.data.page < response.data.data.totalPages ? response.data.data.page + 1 : null,
+          previousPage: response.data.data.page > 1 ? response.data.data.page - 1 : null,
+        },
       };
     }),
   delete: (blogId: string) => api.delete(`/blog/delete-blog/${blogId}`),

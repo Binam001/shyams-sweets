@@ -7,7 +7,7 @@ export const useGetBlog = () => {
     queryKey: ["blog"],
     queryFn: async () => {
       const response = await blogApi.getAllBlogs();
-      return response.data.blogs;
+      return response.data;
     },
   });
 };
@@ -18,7 +18,7 @@ export const useGetPaginatedBlogs = (page: number, limit: number) => {
     queryFn: async () => {
       const response = await blogApi.getAllBlogs({ page, limit });
       return {
-        data: response.data.blogs,
+        data: response.data,
         total: response.pagination.total,
         totalPages: response.pagination.totalPages,
         currentPage: response.pagination.currentPage,
