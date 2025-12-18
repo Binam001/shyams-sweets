@@ -78,14 +78,14 @@ export default function BlogPage() {
             isLoading={isLoading}
             onEdit={setBlogToEdit}
             pagination={{
-              total: data?.total || 0,
-              totalPages: data?.totalPages || 1,
-              currentPage: data?.currentPage || 1,
-              itemsPerPage: data?.itemsPerPage || 10,
-              hasNextPage: data?.hasNextPage || false,
-              hasPreviousPage: data?.hasPreviousPage || false,
-              nextPage: data?.nextPage || undefined,
-              previousPage: data?.previousPage || undefined,
+              total: data?.pagination?.total || 0,
+              totalPages: data?.pagination?.totalPages || 1,
+              currentPage: data?.pagination?.currentPage || 1,
+              itemsPerPage: data?.pagination?.itemsPerPage || 10,
+              hasNextPage: data?.pagination?.hasNextPage || false,
+              hasPreviousPage: data?.pagination?.hasPreviousPage || false,
+              nextPage: data?.pagination?.nextPage || undefined,
+              previousPage: data?.pagination?.previousPage || undefined,
             }}
             onPageChange={(newPage) => {
               setPagination((prev) => ({ ...prev, page: newPage }));
