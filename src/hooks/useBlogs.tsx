@@ -7,7 +7,7 @@ export const useGetBlog = () => {
     queryKey: ["blog"],
     queryFn: async () => {
       const response = await blogApi.getAllBlogs();
-      return response.data;
+      return response.data; // This is already the blogs array from api-call.ts transformation
     },
   });
 };
@@ -16,18 +16,8 @@ export const useGetPaginatedBlogs = (page: number, limit: number) => {
   return useQuery({
     queryKey: ["blog", page, limit],
     queryFn: async () => {
-      const response = await blogApi.getAllBlogs({ page, limit });
-      return {
-        data: response.data,
-        total: response.pagination.total,
-        totalPages: response.pagination.totalPages,
-        currentPage: response.pagination.currentPage,
-        itemsPerPage: response.pagination.itemsPerPage,
-        hasNextPage: response.pagination.hasNextPage,
-        hasPreviousPage: response.pagination.hasPreviousPage,
-        nextPage: response.pagination.nextPage,
-        previousPage: response.pagination.previousPage,
-      };
+      // blogApi.getAllBlogs already returns { data: blogs[], pagination: {...} }
+      return await blogApi.getAllBlogs({ page, limit });
     },
   });
 };
