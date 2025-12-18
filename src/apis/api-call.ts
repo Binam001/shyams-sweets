@@ -66,7 +66,7 @@ export const blogApi = {
       headers: { "Content-Type": "multipart/form-data" },
     }),
   update: (blogId: string, data: object) =>
-    api.patch(`/blog/update-blog/${blogId}`, data, {
+    api.put(`/blog/update-blog/${blogId}`, data, {
       headers: { "Content-Type": "multipart/form-data" },
     }),
   getOne: (blogId: string) => api.get(`/blog/get-blog/${blogId}`),
@@ -81,8 +81,12 @@ export const blogApi = {
           itemsPerPage: response.data.data.limit,
           hasNextPage: response.data.data.page < response.data.data.totalPages,
           hasPreviousPage: response.data.data.page > 1,
-          nextPage: response.data.data.page < response.data.data.totalPages ? response.data.data.page + 1 : null,
-          previousPage: response.data.data.page > 1 ? response.data.data.page - 1 : null,
+          nextPage:
+            response.data.data.page < response.data.data.totalPages
+              ? response.data.data.page + 1
+              : null,
+          previousPage:
+            response.data.data.page > 1 ? response.data.data.page - 1 : null,
         },
       };
     }),

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
-import { Edit, Trash2, Loader } from "lucide-react";
+import { MoreHorizontal } from "lucide-react";
 // import { CaretSortIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -20,10 +20,18 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
+  // AlertDialogTrigger,
 } from "../ui/alert-dialog";
-import { Icon } from "@iconify/react/dist/iconify.js";
+// import { Icon } from "@iconify/react/dist/iconify.js";
 import { toast } from "react-toastify";
+// import { useNavigate } from "react-router-dom";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 
 interface BlogTableProps {
   blogs: Blog[];
@@ -44,7 +52,7 @@ interface BlogTableProps {
 
 export function BlogTable({
   blogs,
-  isLoading,
+  // isLoading,
   onEdit,
   pagination,
   onPageChange,
@@ -89,8 +97,8 @@ export function BlogTable({
       enableHiding: false,
     },
     {
-      id: "sn",
-      header: ({ column }) => <div className="text-start">S.N.</div>,
+      id: "sn", // Changed accessorKey to id for better practice when not directly mapping to a data key
+      header: () => <div className="text-start">S.N.</div>,
       cell: ({ row }) => <div>{row.index + 1}</div>,
     },
     {
@@ -126,62 +134,36 @@ export function BlogTable({
       id: "actions",
       header: "Actions",
       enableHiding: false,
-      cell: ({ row }) => (
-        <div className="flex items-center">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => onEdit(row.original)}
-            className="cursor-pointer hover:bg-transparent"
-          >
-            <Icon
-              icon="mynaui:edit-one"
-              width="16"
-              height="16"
-              className="text-zinc-400 hover:text-[#262262]"
-            />
-          </Button>
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                disabled={isPending}
-                className="cursor-pointer hover:bg-transparent"
-              >
-                {isPending ? (
-                  <Loader className="h-5 w-5 animate-spin" />
-                ) : (
-                  <Icon
-                    icon="ic:baseline-delete"
-                    width="16"
-                    height="16"
-                    className="text-zinc-400 hover:text-red-500"
-                  />
-                )}
+      cell: ({ row }) => {
+        const blog = row.original;
+        // const navigate = useNavigate(); // Not used directly in actions now
+
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
               </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  This action cannot be undone. It will permanently delete the
-                  selected item.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction
-                  className="bg-red-500 hover:bg-red-600"
-                  onClick={() => handleDelete(row.original.id)}
-                >
-                  Confirm
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-        </div>
-      ),
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuItem onClick={() => onEdit(blog)}>
+                Edit Blog
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                className="text-red-500 hover:text-red-500 focus:text-red-500"
+                onClick={() => {
+                  setBlogToDelete(blog);
+                  setDeleteDialogOpen(true);
+                }}
+              >
+                Delete Blog
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
     },
   ];
 

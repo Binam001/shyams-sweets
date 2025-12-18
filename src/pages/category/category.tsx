@@ -1,11 +1,14 @@
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { CategoryTable } from "./CategoryTable";
-import { Columns, type Category } from "./CategoryColumns";
+import { CategoryTable } from "../../components/category/CategoryTable";
+import {
+  Columns,
+  type Category,
+} from "../../components/category/CategoryColumns";
 import { categoryApi } from "@/apis/api-call";
-import { Button } from "../ui/button";
+import { Button } from "../../components/ui/button";
 import { Icon } from "@iconify/react";
-import Breadcrumb from "../dashboard/Breadcrumb";
+import Breadcrumb from "../../components/dashboard/Breadcrumb";
 import { toast } from "react-toastify";
 import {
   Dialog,
@@ -14,7 +17,7 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
-} from "../ui/dialog";
+} from "../../components/ui/dialog";
 
 const CategoryPage = () => {
   const [data, setData] = useState<Category[]>([]);

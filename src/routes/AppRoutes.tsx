@@ -1,7 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import DashboardLayout from "../layout/DashboardLayout";
 import LoginPage from "@/components/LoginPage";
-import CategoryPage from "@/components/category/CategoryPage";
 import AddCategory from "@/components/category/AddCategory";
 import EditCategory from "../components/category/EditCategory";
 import CategorySearchPage from "@/components/category/CategorySearchPage";
@@ -10,6 +9,7 @@ import SubCategoryPage from "@/components/subCategory/SubCategoryPage";
 import EditSubCategory from "@/components/subCategory/EditSubCategory";
 import ProtectedRoute from "./ProtectedRoute";
 import BlogPage from "@/pages/blog/blog";
+import CategoryPage from "@/pages/category/Category";
 
 const AppRoutes = () => {
   return (

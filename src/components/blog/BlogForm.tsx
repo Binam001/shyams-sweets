@@ -16,6 +16,7 @@ import type { Blog } from "@/types/blog";
 import { useCreateBlog, useUpdateBlog } from "@/hooks/useBlogs";
 import { toast } from "react-toastify";
 import RichTextEditor from "../RichTextEditor";
+import { Loader2 } from "lucide-react";
 
 type BlogFormValues = {
   title: string;
@@ -50,7 +51,7 @@ export function BlogForm({ blog, onSuccess, onCancel }: BlogFormProps) {
   const [description, setDescription] = useState(blog?.description || "");
 
   const { mutate: updateBlog, isPending: isUpdatePending } = useUpdateBlog(
-    blog?._id as string
+    blog?.id as string
   );
 
   const { mutate: addBlog, isPending: isAddPending } = useCreateBlog();
@@ -63,7 +64,6 @@ export function BlogForm({ blog, onSuccess, onCancel }: BlogFormProps) {
           excerpt: blog.excerpt || "",
           description: blog.description || "",
           estimatedReadTime: blog.estimatedReadTime || 5,
-          // isActive: blog.isActive ?? true,
         }
       : defaultValues,
   });
@@ -137,6 +137,19 @@ export function BlogForm({ blog, onSuccess, onCancel }: BlogFormProps) {
     }
   };
 
+  const handleTitleChange = (value: string) => {
+    // Auto-generate slug from title
+    const slug = value
+      .toLowerCase()
+      .trim()
+      .replace(/[^\w\s-]/g, "") // Remove special characters
+      .replace(/\s+/g, "-") // Replace spaces with hyphens
+      .replace(/-+/g, "-"); // Replace multiple hyphens with single hyphen
+
+    form.setValue("title", value);
+    form.setValue("slug", slug);
+  };
+
   return (
     <div className="mt-10 mx-auto">
       <Form {...form}>
@@ -158,7 +171,8 @@ export function BlogForm({ blog, onSuccess, onCancel }: BlogFormProps) {
                     <Input
                       placeholder="Enter blog title"
                       {...field}
-                      className="rounded-sm border-gray-300 focus:ring-2 focus:ring-[#262262]"
+                      onChange={(e) => handleTitleChange(e.target.value)}
+                      className="rounded-sm border-gray-300 focus:ring-2 focus:ring-primary"
                     />
                   </FormControl>
                   <FormMessage />
@@ -172,7 +186,7 @@ export function BlogForm({ blog, onSuccess, onCancel }: BlogFormProps) {
                 <FormItem>
                   <FormLabel>Slug</FormLabel>
                   <FormControl>
-                    <Input placeholder="category-slug" {...field} />
+                    <Input placeholder="blog-slug" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -199,43 +213,19 @@ export function BlogForm({ blog, onSuccess, onCancel }: BlogFormProps) {
                       onChange={(e) =>
                         field.onChange(parseInt(e.target.value) || 1)
                       }
-                      className="rounded-sm border-gray-300 focus:ring-2 focus:ring-[#262262]"
+                      className="rounded-sm border-gray-300 focus:ring-2 focus:ring-primary"
                     />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-
-            {/* Is Active Toggle */}
-            {/* <FormField
-              control={control}
-              name="isActive"
-              render={({ field }) => (
-                <FormItem className="flex flex-col justify-end">
-                  <div className="flex items-center space-x-2">
-                    <FormControl>
-                      <input
-                        type="checkbox"
-                        checked={field.value}
-                        onChange={field.onChange}
-                        className="h-4 w-4 rounded border-gray-300 text-[#262262] focus:ring-[#262262]"
-                      />
-                    </FormControl>
-                    <FormLabel className="text-sm font-medium text-gray-700">
-                      Is Active
-                    </FormLabel>
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              )}
-            /> */}
           </div>
 
           {/* coverimage Upload */}
           <FormItem className="flex flex-col justify-end">
             <FormLabel className="text-sm font-medium text-gray-700">
-              Cover Image (480 × 370)
+              Cover Image
             </FormLabel>
             <FormControl>
               <Input
@@ -249,7 +239,7 @@ export function BlogForm({ blog, onSuccess, onCancel }: BlogFormProps) {
                       : null
                   );
                 }}
-                className="cursor-pointer rounded-sm border-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-[2px] file:border-0 file:bg-[#262262]/10 file:text-[#262262] hover:file:bg-[#262262]/20"
+                className="cursor-pointer rounded-sm border-gray-300 file:mr-4 file:px-4 file:rounded-[2px] file:border-0 file:bg-primary/10 file:text-primary hover:file:bg-primary/20"
               />
             </FormControl>
             <p className="text-xs text-red-500 mt-1 font-medium">
@@ -300,9 +290,12 @@ export function BlogForm({ blog, onSuccess, onCancel }: BlogFormProps) {
             </Button>
             <Button
               type="submit"
-              className="rounded-sm bg-[#262262] hover:bg-[#1a1a4a] text-white"
+              className="rounded-sm bg-primary text-white"
               disabled={isAddPending || isUpdatePending}
             >
+              {isAddPending || isUpdatePending ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : null}
               {blog ? "Update" : "Create"}
             </Button>
           </div>

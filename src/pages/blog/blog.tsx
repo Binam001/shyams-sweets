@@ -30,7 +30,7 @@ export default function BlogPage() {
             <Button
               onClick={() => setIsAdding(false)}
               variant="outline"
-              className="cursor-pointer hover:bg-[#262262]"
+              className="cursor-pointer"
             >
               Back to List
             </Button>
@@ -49,7 +49,7 @@ export default function BlogPage() {
             <Button
               onClick={() => setBlogToEdit(null)}
               variant="outline"
-              className="cursor-pointer hover:bg-[#262262]"
+              className="cursor-pointer"
             >
               Back to List
             </Button>
